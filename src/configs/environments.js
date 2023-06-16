@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-const number = process.env.NUMBER;
-const name = process.env.NAME;
+const MONGO_URI = process.env.MONGO_URI;
 
-export default { number, name };
+export default { MONGO_URI };
