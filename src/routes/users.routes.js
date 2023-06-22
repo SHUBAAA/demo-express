@@ -8,7 +8,8 @@ import {
     updateUserById,
     soyYo,
     getEstudiantes,
-    userLogin
+    userLogin,
+    crearMensaje
 } from '../controllers/user.controller.js';
 
 const router = Router();
@@ -17,7 +18,11 @@ const router = Router();
 router.get("/", soyYo);
 router.post('/auth/register', createUser);
 router.get('/users', getEstudiantes);
-router.get("/auth/login", userLogin)
+router.post("/auth/login", userLogin)
+router.post("/messages", crearMensaje)
+
+
+
 
 
 router.get('/auth/:register', createUser);

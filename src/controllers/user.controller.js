@@ -44,14 +44,25 @@ async function userLogin(req, res) {
         const estudiantes = await EstudianteModel.find({ email: email });
         const passwordEncrip = estudiantes[0].password;
         const logged = await bcrypt.compare(password, passwordEncrip);
-
-    
         res.send(logged)
 
     } catch (err) {
         res.status(500).send(err);
     }
 
+}
+
+async function crearMensaje(req, res) {
+    const userId = req.body.userId;
+    const contenido = req.body.contenido;
+
+
+    const mensaje = {
+        creadorId: userId,
+        contenido: contenido,
+    };
+
+    res.send(mensaje)
 }
 
 
@@ -134,5 +145,6 @@ export {
     deleteContact,
     updateUserById,
     soyYo,
-    userLogin
+    userLogin,
+    crearMensaje
 };
