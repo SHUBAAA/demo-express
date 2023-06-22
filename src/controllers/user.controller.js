@@ -10,7 +10,6 @@ async function createUser(req, res) {
         const dni = req.body.dni;
         const encryptedPassword = bcrypt.hashSync(password, 10);
         const estudianteCreated = await EstudianteModel.create({ name: name, email: email, dni: dni, password: encryptedPassword });
-        console.log("oli")
         res.send(estudianteCreated);
     } catch (err) {
         res.status(500).send(err);
@@ -36,6 +35,34 @@ async function getEstudiantes(req, res) {
         res.status(500).send(err);
     }
 }
+
+
+async function userLogin(req, res) {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+        const estudiantes = await EstudianteModel.find({ email: email });
+        const isMatch = await bcrypt.compare(password, user.password)
+        res.send(estudiantes)
+
+    } catch (err) {
+        res.status(500).send(err);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function getUserById(req, res) {
     try {
@@ -103,5 +130,6 @@ export {
     getUserContacts,
     deleteContact,
     updateUserById,
-    soyYo
+    soyYo,
+    userLogin
 };

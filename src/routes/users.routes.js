@@ -7,7 +7,8 @@ import {
     deleteUserById,
     updateUserById,
     soyYo,
-    getEstudiantes
+    getEstudiantes,
+    userLogin
 } from '../controllers/user.controller.js';
 
 const router = Router();
@@ -15,10 +16,10 @@ const router = Router();
 
 router.get("/", soyYo);
 router.post('/auth/register', createUser);
-
-
-
 router.get('/users', getEstudiantes);
+router.post("/auth/login", userLogin)
+
+
 router.get('/auth/:register', createUser);
 
 router.delete('/users/:userId', deleteUserById);

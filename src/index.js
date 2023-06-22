@@ -10,7 +10,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
 app.use('', userRoutes);
 
 console.log('Connecting to database...');
