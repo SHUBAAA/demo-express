@@ -42,8 +42,11 @@ async function userLogin(req, res) {
         const email = req.body.email;
         const password = req.body.password;
         const estudiantes = await EstudianteModel.find({ email: email });
-        const isMatch = await bcrypt.compare(password, user.password)
-        res.send(estudiantes)
+        const passwordEncrip = estudiantes[0].password;
+        const logged = await bcrypt.compare(password, passwordEncrip);
+
+    
+        res.send(logged)
 
     } catch (err) {
         res.status(500).send(err);

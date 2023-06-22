@@ -17,7 +17,7 @@ const router = Router();
 router.get("/", soyYo);
 router.post('/auth/register', createUser);
 router.get('/users', getEstudiantes);
-router.post("/auth/login", userLogin)
+router.get("/auth/login", userLogin)
 
 
 router.get('/auth/:register', createUser);
