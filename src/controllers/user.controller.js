@@ -1,4 +1,4 @@
-import EstudianteModel from '../models/user.model.js';
+import { EstudianteModel, MensajeModel } from '../models/user.model.js';
 import bcrypt from "bcrypt";
 
 async function createUser(req, res) {
@@ -36,7 +36,6 @@ async function getEstudiantes(req, res) {
     }
 }
 
-
 async function userLogin(req, res) {
     try {
         const email = req.body.email;
@@ -53,98 +52,48 @@ async function userLogin(req, res) {
 }
 
 async function crearMensaje(req, res) {
-    const userId = req.body.userId;
-    const contenido = req.body.contenido;
 
-
-    const mensaje = {
-        creadorId: userId,
-        contenido: contenido,
-    };
-
-    res.send(mensaje)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-async function getUserById(req, res) {
     try {
-        const userId = req.params.userId;
-        const user = await UserModel.findById(userId);
-        if (!user) {
-            return res.status(404).send({ error: 'No existe tal usuario' });
-        }
-        res.send(user);
+        const userId = req.body.userId;
+        const contenido = req.body.contenido;
+
+        const mensajeCreado = await MensajeModel.create({ creadorId: userId, contenido: contenido });
+        res.send(mensajeCreado)
     } catch (err) {
         res.status(500).send(err);
     }
 }
 
-async function deleteUserById(req, res) {
+async function verMensajes(req, res) {
+
     try {
         const userId = req.params.userId;
-        const user = await UserModel.deleteOne({ _id: userId });
-        res.send(user);
+        const mensajes = await MensajeModel.find({ creadorId: userId });
+
+        res.send(mensajes);
+
     } catch (err) {
         res.status(500).send(err);
     }
 }
 
-async function updateUserById(req, res) {
+
+async function deleteMensajeById(req, res) {
     try {
-        const userId = req.params.userId;
-        const name = req.body.name;
-        const age = req.body.age;
-        const user = await UserModel.updateOne({ _id: userId }, { name, age });
-        res.send(user);
+        const messageId = req.params.messageId;
+        const mensaje = await MensajeModel.deleteOne({ _id: messageId });
+        res.send(mensaje);
     } catch (err) {
         res.status(500).send(err);
     }
-}
-
-function getUserContacts(req, res) {
-    const userId = req.params.userId;
-    const name = req.body.name;
-    const number = req.body.number;
-
-    const user = {
-        nombre: name,
-        numero: number,
-    };
-
-    res.send({ user });
-}
-
-function deleteContact(req, res) {
-    const userId = req.params.userId;
-    const contactId = req.params.contactId;
-
-    // const { userId, contactId } = req.params;
-    res.send({
-        message: `este es un delete para el user ${userId} y en el contacto ${contactId}`,
-    });
 }
 
 export {
-    deleteUserById,
-    getUserById,
+    deleteMensajeById,
     getEstudiantes,
     createUser,
-    getUserContacts,
-    deleteContact,
-    updateUserById,
     soyYo,
     userLogin,
-    crearMensaje
+    crearMensaje,
+    verMensajes
 };

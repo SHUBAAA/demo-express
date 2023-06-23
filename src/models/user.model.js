@@ -25,11 +25,12 @@ const estudianteSchema = new mongoose.Schema(
 const mensajeSchema = new mongoose.Schema({
   creadorId: { type: String, required: true },
   contenido: { type: String, required: true },
-});
+}, { timestamps: true });
 
 const EstudianteModel = mongoose.model('Estudiante', estudianteSchema);
 const MensajeModel = mongoose.model('Mensaje', mensajeSchema);
 
 
 
-export default EstudianteModel;
+export { MensajeModel, EstudianteModel };
+

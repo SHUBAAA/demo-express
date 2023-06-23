@@ -1,15 +1,12 @@
 import { Router } from 'express';
 import {
-    deleteContact,
-    getUserContacts,
     createUser,
-    getUserById,
-    deleteUserById,
-    updateUserById,
     soyYo,
     getEstudiantes,
     userLogin,
-    crearMensaje
+    crearMensaje,
+    verMensajes,
+    deleteMensajeById
 } from '../controllers/user.controller.js';
 
 const router = Router();
@@ -18,22 +15,9 @@ const router = Router();
 router.get("/", soyYo);
 router.post('/auth/register', createUser);
 router.get('/users', getEstudiantes);
-router.post("/auth/login", userLogin)
-router.post("/messages", crearMensaje)
-
-
-
-
-
-router.get('/auth/:register', createUser);
-
-router.delete('/users/:userId', deleteUserById);
-router.put('/users/:userId', updateUserById);
-
-router.get('/users/:userId/contacts', getUserContacts);
-
-router.post('/users/:userId/contacts', getUserContacts);
-
-router.delete('/users/:userId/contacts/:contactId', deleteContact);
+router.post("/auth/login", userLogin);
+router.post("/messages", crearMensaje);
+router.get("/users/:userId/messages", verMensajes);
+router.delete('/messages/:messageId', deleteMensajeById);
 
 export default router;
