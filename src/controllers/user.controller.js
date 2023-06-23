@@ -9,11 +9,25 @@ async function createUser(req, res) {
         const email = req.body.email;
         const dni = req.body.dni;
         const encryptedPassword = bcrypt.hashSync(password, 10);
+
+        if (!name) {
+            return res.status(400).send({ message: "ERROR⚠️ Falta Nombre" })
+        }
+        if (!email) {
+            return res.status(400).send({ message: "ERROR⚠️ Falta Email" })
+        }
+        if (!dni) {
+            return res.status(400).send({ message: "ERROR⚠️ Falta DNI" })
+        }
+        if (!password) {
+            return res.status(400).send({ message: "ERROR⚠️ Falta Contraseña" })
+        }
+
         const estudianteCreated = await EstudianteModel.create({ name: name, email: email, dni: dni, password: encryptedPassword });
         res.send(estudianteCreated);
     } catch (err) {
         res.status(500).send(err);
-        res.status(400).send(err);
+
     }
 }
 
@@ -40,13 +54,20 @@ async function userLogin(req, res) {
     try {
         const email = req.body.email;
         const password = req.body.password;
-        const estudiantes = await EstudianteModel.find({ email: email });
-        const passwordEncrip = estudiantes[0].password;
+        if (!email) {
+            return res.status(400).send({ logged: false, message: "ERROR⚠️ Falta Email" })
+        }
+
+        if (!password) {
+            return res.status(400).send({ logged: false, message: "ERROR⚠️ Falta Contraseña" })
+        }
+        const estudiantes = await EstudianteModel.findOne({ email: email });
+        const passwordEncrip = estudiantes.password;
         const logged = await bcrypt.compare(password, passwordEncrip);
         res.send(logged)
 
     } catch (err) {
-        res.status(500).send(err);
+        res.status(500).send({ logged: false, message: "ERROR⚠️ No existe usuario" });
     }
 
 }
@@ -82,7 +103,7 @@ async function deleteMensajeById(req, res) {
     try {
         const messageId = req.params.messageId;
         const mensaje = await MensajeModel.deleteOne({ _id: messageId });
-        res.send(mensaje);
+        res.status(204).send(mensaje);
     } catch (err) {
         res.status(500).send(err);
     }
